@@ -29,15 +29,15 @@ function Formatter.new(fmt)
 end
 
 
-local ConsoleHandler = {}
+local StdoutHanlder = {}
 
-ConsoleHandler.__index = ConsoleHandler
+StdoutHanlder.__index = StdoutHanlder
 
-function ConsoleHandler:new()
+function StdoutHanlder:new()
 	return setmetatable({},self)
 end
 
-function ConsoleHandler.write(self,message)
+function StdoutHanlder.write(self,message)
 	io.stdout:write(message,'\n')
 end
 
@@ -63,7 +63,7 @@ local Logging = {}
 
 function Logging:new(name,level,handler,format)
 	local level = LOG_LEVEL[level] or LOG_LEVEL.INFO 
-	local handler = handler or ConsoleHandler:new()
+	local handler = handler or StdoutHanlder:new()
 	local format = format or DEFAULT_FORMAT
 	local formatter = Formatter.new(format)
 	local logger = {
@@ -121,7 +121,7 @@ end
 
 local log = {
 	Logging = Logging,
-	ConsoleHandler = ConsoleHandler,
+	StdoutHanlder = StdoutHanlder,
 	FileHandler = FileHandler
 }
 
