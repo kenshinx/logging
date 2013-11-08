@@ -130,6 +130,10 @@ function Logging.error(self,message,...)
 	self:write("ERROR",message:format(...))
 end
 
+function Logging.__tostring(self)
+	return "Logger:" .. self.name
+end
+
 
 
 local log = {
