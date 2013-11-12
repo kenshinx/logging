@@ -51,7 +51,7 @@ function FileHandler:new(file)
 end
 
 function FileHandler.write(self,message)
-    f = io.open(self.file,"a")
+    local f = io.open(self.file,"a")
     f:write(message,'\n')
     f:close()
 
@@ -130,8 +130,8 @@ function Logging.error(self,message,...)
     self:write("ERROR",message:format(...))
 end
 
-function Logging.__tostring(self)
-    return "Logger:" .. self.name
+function logging.fatal(self,message,...)
+    self:write("FATAL",message:format(...))
 end
 
 
