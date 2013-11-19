@@ -57,7 +57,6 @@ local FileHandler = {}
 FileHandler.__index = FileHandler
 
 function FileHandler:new(file)
-    print(file)
     return setmetatable({file=file},self)
 end
 
