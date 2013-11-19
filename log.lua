@@ -1,3 +1,13 @@
+-- Usage
+-- local log = require "log"
+-- local handler = log.FileHandler("lua.log")
+-- local logger = log.Logging:new("Foo","INFO","handler")
+
+-- logger.debug("debug message")  
+-- logger.info("info message")
+-- logger.warn("warning message")
+-- 
+
 
 local LOG_LEVEL = {
     DEBUG = 1,
@@ -47,6 +57,7 @@ local FileHandler = {}
 FileHandler.__index = FileHandler
 
 function FileHandler:new(file)
+    print(file)
     return setmetatable({file=file},self)
 end
 
@@ -130,16 +141,28 @@ function Logging.error(self,message,...)
     self:write("ERROR",message:format(...))
 end
 
-function logging.fatal(self,message,...)
+function Logging.fatal(self,message,...)
     self:write("FATAL",message:format(...))
 end
 
 
+local function new_handler(h, ...)
+    if h == "stdout" then
+        return StdoutHandler:new()
+    elseif h == "file" then
+        return FileHandler:new(...)
+    elseif h == "syslog" then
+        error("unimplement handler")
+    else
+        error("unkown handler")
+    end
+end
 
 local log = {
     Logging = Logging,
     StdoutHandler = StdoutHandler,
-    FileHandler = FileHandler
+    FileHandler = FileHandler,
+    new_handler = new_handler
 }
 
 
