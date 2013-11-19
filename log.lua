@@ -39,15 +39,15 @@ function Formatter.new(fmt)
 end
 
 
-local StdoutHandler = {}
+local StreamHandler = {}
 
-StdoutHandler.__index = StdoutHandler
+StreamHandler.__index = StreamHandler
 
-function StdoutHandler:new()
+function StreamHandler:new()
     return setmetatable({},self)
 end
 
-function StdoutHandler.write(self,message)
+function StreamHandler.write(self,message)
     io.stdout:write(message,'\n')
 end
 
@@ -86,7 +86,7 @@ local Logging = {}
 
 function Logging:new(name,level,handler,format)
     local level = LOG_LEVEL[level] or LOG_LEVEL.INFO 
-    local handler = handler or StdoutHandler:new()
+    local handler = handler or StreamHandler:new()
     local format = format or DEFAULT_FORMAT
     local formatter = Formatter.new(format)
     local logger = {
@@ -145,27 +145,12 @@ function Logging.fatal(self,message,...)
 end
 
 
-local function new_handler(h, ...)
-    if h == "stdout" then
-        return StdoutHandler:new()
-    elseif h == "file" then
-        return FileHandler:new(...)
-    elseif h == "syslog" then
-        error("unimplement handler")
-    else
-        error("unkown handler")
-    end
-end
-
 local log = {
     Logging = Logging,
-    StdoutHandler = StdoutHandler,
+    StreamHandler = StreamHandler,
     FileHandler = FileHandler,
-    new_handler = new_handler
 }
 
 
 return log
-
-
 
