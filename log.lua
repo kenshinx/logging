@@ -73,7 +73,7 @@ local SyslogHandler = {}
 SyslogHandler.__index = SyslogHandler
 
 function SyslogHandler:new(address,facility)
-    return setmetatable{address=address,facility=facility}
+    return setmetatable({address=address,facility=facility}, self)
 end
 
 function SyslogHandler:write(message)
@@ -114,9 +114,17 @@ function Logging.get_level(self)
     end
 end
 
-function Logging.write(self,level,message)
+function Logging.write(self,level,message,...)
     if LOG_LEVEL[level] < self.level then
         return
+    end
+    if not message then
+        message = ''
+    end
+    if type(message) == "string" then
+        message  = string.format(message,...)
+    elseif type(message) == "table" then
+        message = string.format("%s",message)
     end
     log = self.formatter(self.name,level,message)
     self.handler:write(log)
@@ -124,24 +132,28 @@ end
 
 
 function Logging.debug(self, message, ...)
-    self:write("DEBUG",message:format(...))
+    self:write("DEBUG", message, ...)
 end
 
 function Logging.info(self,message,...)
-    self:write("INFO",message:format(...))
+    self:write("INFO", message, ...)
 end
 
 
 function Logging.warn(self,message,...)
-    self:write("WARNING",message:format(...))
+    self:write("WARNING", message, ...)
+end
+
+function Logging.notice(self,message,...)
+    self:write("NOTICE", message, ...)
 end
 
 function Logging.error(self,message,...)
-    self:write("ERROR",message:format(...))
+    self:write("ERROR", message, ...)
 end
 
 function Logging.fatal(self,message,...)
-    self:write("FATAL",message:format(...))
+    self:write("FATAL", message, ...)
 end
 
 
@@ -153,4 +165,6 @@ local log = {
 
 
 return log
+
+
 
