@@ -10,10 +10,20 @@ Basic Usage
 ```
 local log = require "log"
 local logger = log.Logging:new("Foo","INFO")
+logger:info("info message")
+```
 
-logger.debug("debug message")  --Default level: INFO, so debug log will no output.
-logger.info("info message")
-logger.warn("warning message")
+Adcance Usage
+
+```
+local log = require "log"
+local handler = log.FileHandler("lua.log")
+local level = "DEBUG"
+local format = "${asctime} [${name}] ${level}: ${message}"
+local logger = log.Logging:new("foo",
+                                level,
+                                handler,
+                                format)
 ```
 
 ### File Handler
@@ -23,7 +33,7 @@ local log = require "log"
 local handler = log.FileHandler("lua.log")
 logger = log.Logging:new("Foo","INFO",handler)
 
-logger.info("This message will be save into :%s","lua.log")
+logger:info("This message will be save into :%s","lua.log")
 ``` 
 
 If not set handler, log will be redirect to stdout default.
