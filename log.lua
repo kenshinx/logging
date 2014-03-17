@@ -13,8 +13,9 @@ local LOG_LEVEL = {
     DEBUG = 1,
     INFO = 2,
     WARNING = 3,
-    ERROR = 4,
-    FATAL = 5
+    NOTICE = 4,
+    ERROR = 5,
+    FATAL = 6
 }
 
 local DEFAULT_FORMAT = "${asctime} [${name}] ${level}: ${message}"
