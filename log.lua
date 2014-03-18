@@ -3,9 +3,7 @@
 -- local handler = log.FileHandler("lua.log")
 -- local logger = log.Logging:new("Foo","INFO","handler")
 
--- logger.debug("debug message")  
--- logger.info("info message")
--- logger.warn("warning message")
+-- logger:debug("debug message")  
 -- 
 
 
